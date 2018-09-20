@@ -1,0 +1,35 @@
+version: '3.2'
+
+services:
+
+  redmine:
+    container_name: srv-redmine
+    image: redmine
+    restart: always
+    ports:
+      - 3000:3000
+    environment:
+      REDMINE_DB_MYSQL: db
+      REDMINE_DB_PASSWORD: root
+    networks: 
+      - net-redmine
+    volumes:
+      - "data:/usr/src/redmine/files"
+  db:
+    container_name: srv-mysql
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: redmine
+    networks: 
+      - net-redmine
+    volumes:
+      - "mysql-57:/var/lib/mysql"
+    ports:
+      - 3307:3306
+networks:
+  net-redmine:
+volumes:
+  mysql-57:
+  data:
